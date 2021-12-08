@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Search',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,12 @@ WSGI_APPLICATION = 'SoccerPlayerDB.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',       # 选择数据库为MySQL
+        'NAME': 'SoccerPlayerDB',                   # 数据库名称
+        'HOST': '127.0.0.1',                        # 主机地址
+        'PORT': '3306',                             # 数据库服务端口，MySQL是3306
+        'USER': 'root',                             # 数据库账户
+        'PASSWORD': '123456'                        # 数据库密码，如果没有密码，该项为空。
     }
 }
 
@@ -104,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'UTC'
 
