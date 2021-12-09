@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>球员</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <style type="text/css">
+        td{
+            white-space: nowrap;
+            text-align: center;
+        }
+        th{
+            white-space: nowrap;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">足球运动员信息数据库</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/admin/">我是管理员</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/index">首页</a></li>
+                <li><a href="/Search/searchteams">球队</a></li>
+                <li class="active"><a href="#">球员 <span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <form action="/Search/searchplayers" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="球员姓名" name="name" value="{{ name }}">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="球队" name="team" value="{{ team }}">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <div class="col-lg-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="国籍" name="country" value="{{ country }}">
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">查询</button>
+                </span>
+                </div><!-- /.row -->
+            </form>
+
+            <h2 class="sub-header">查询结果</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>简称</th>
+                        <th>中文名</th>
+                        <th>中文简称</th>
+                        <th>全称</th>
+                        <th>出生年份</th>
+                        <th>国籍</th>
+                        <th>球队</th>
+                        <th>球队中文名</th>
+                        <th>球队类型</th>
+                        <th>球衣号码</th>
+                        <th>位置</th>
+                        <th>球员类型</th>
+                        <th>加入时间</th>
+                        <th>离队时间</th>
+                    </tr>
+                    <tbody>
+                    {% for foo in result %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ foo.player__firstname }}</td>
+                            <td>{{ foo.player__shortname }}</td>
+                            <td>{{ foo.player__firstname_cn }}</td>
+                            <td>{{ foo.player__shortname_cn }}</td>
+                            <td>{{ foo.player__originname }}</td>
+                            <td>{{ foo.player__yearofbirth }}</td>
+                            <td>{{ foo.player__countryid__name_cn }}</td>
+                            <td>{{ foo.team__fullname_en }}</td>
+                            <td>{{ foo.team__fullname_cn }}</td>
+                            <td>
+                                {% if foo.team__type == 0 %}
+                                    俱乐部
+                                {% else %}
+                                    国家队
+                                {% endif %}
+                            </td>
+                            <td>{{ foo.num }}</td>
+                            <td>{{ foo.pos }}</td>
+                            <td>
+                                {% if foo.type == 0 %}
+                                    本队球员
+                                {% else %}
+                                    租借球员
+                                {% endif %}
+                            </td>
+                            <td>{{ foo.time_join }}</td>
+                            <td>{{ foo.time_leave }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
